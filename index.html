@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Pendapatan</title>
+    <title>Kalkulator Kasir</title>
 
     <style>
         body {
@@ -52,7 +52,6 @@
             color: white;
             border: none;
             border-radius: 6px;
-            cursor: pointer;
         }
 
         .result {
@@ -74,43 +73,28 @@
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>Kalkulator Pendapatan</h1>
+    <h1>Kalkulator Kasir</h1>
 
-    <input type="number" id="harga" placeholder="Harga">
-    <input type="number" id="jumlah" placeholder="Jumlah">
-    <input type="number" id="diskon" placeholder="Diskon (%)">
+    <form method="POST">
+        <input type="number" step="any" name="harga" placeholder="Harga">
+        <input type="number" step="any" name="jumlah" placeholder="Jumlah">
+        <input type="number" step="any" name="diskon" placeholder="Diskon (%)">
+        <button type="submit">Hitung</button>
+    </form>
 
-    <button onclick="hitung()">Hitung</button>
-
-    <div id="output"></div>
-</div>
-
-<script>
-function hitung() {
-    let harga = parseFloat(document.getElementById("harga").value);
-    let jumlah = parseFloat(document.getElementById("jumlah").value);
-    let diskon = parseFloat(document.getElementById("diskon").value) || 0;
-
-    let output = document.getElementById("output");
-
-    if (isNaN(harga) || isNaN(jumlah)) {
-        output.innerHTML = '<div class="error">Isi harga dan jumlah dengan benar!</div>';
-        return;
-    }
-
-    let total = harga * jumlah;
-    let potongan = total * (diskon / 100);
-    let hasil = total - potongan;
-
-    output.innerHTML = `
+    {% if hasil is not none %}
         <div class="result">
-            Total: ${total.toLocaleString()} <br>
-            Diskon: ${potongan.toLocaleString()} <br>
-            <strong>Pendapatan: ${hasil.toLocaleString()}</strong>
+            {{ rumus }} <br>
+            Hasil: {{ hasil }}
         </div>
-    `;
-}
-</script>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+</div>
 
 </body>
 </html>
