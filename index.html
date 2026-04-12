@@ -52,6 +52,7 @@
             color: white;
             border: none;
             border-radius: 6px;
+            cursor: pointer;
         }
 
         .result {
@@ -75,26 +76,41 @@
 <div class="container">
     <h1>Kalkulator Kasir</h1>
 
-    <form method="POST">
-        <input type="number" step="any" name="harga" placeholder="Harga">
-        <input type="number" step="any" name="jumlah" placeholder="Jumlah">
-        <input type="number" step="any" name="diskon" placeholder="Diskon (%)">
-        <button type="submit">Hitung</button>
-    </form>
+    <input type="number" id="harga" placeholder="Harga">
+    <input type="number" id="jumlah" placeholder="Jumlah">
+    <input type="number" id="diskon" placeholder="Diskon (%)">
 
-    {% if hasil is not none %}
-        <div class="result">
-            {{ rumus }} <br>
-            Hasil: {{ hasil }}
-        </div>
-    {% endif %}
+    <button onclick="hitung()">Hitung</button>
 
-    {% if error %}
-        <div class="error">
-            {{ error }}
-        </div>
-    {% endif %}
+    <div id="output"></div>
 </div>
+
+<script>
+function hitung() {
+    let harga = parseFloat(document.getElementById("harga").value);
+    let jumlah = parseFloat(document.getElementById("jumlah").value);
+    let diskon = parseFloat(document.getElementById("diskon").value) || 0;
+
+    let output = document.getElementById("output");
+
+    if (isNaN(harga) || isNaN(jumlah)) {
+        output.innerHTML = '<div class="error">Isi harga dan jumlah dengan benar!</div>';
+        return;
+    }
+
+    let total = harga * jumlah;
+    let potongan = total * (diskon / 100);
+    let hasil = total - potongan;
+
+    output.innerHTML = `
+        <div class="result">
+            Total: Rp ${total.toLocaleString()} <br>
+            Diskon: Rp ${potongan.toLocaleString()} <br>
+            <strong>Pendapatan: Rp ${hasil.toLocaleString()}</strong>
+        </div>
+    `;
+}
+</script>
 
 </body>
 </html>
